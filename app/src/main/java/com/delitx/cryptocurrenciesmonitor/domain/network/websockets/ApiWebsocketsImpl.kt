@@ -1,5 +1,6 @@
 package com.delitx.cryptocurrenciesmonitor.domain.network.websockets
 
+import androidx.compose.ui.text.toLowerCase
 import com.delitx.cryptocurrenciesmonitor.domain.model.Currency
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
@@ -61,7 +62,7 @@ class ApiWebsocketsImpl : ApiWebsockets {
     private fun List<String>.encodeToMultipleStreams(
         streamCode: String = TRACKER_STREAM_CODE
     ): String =
-        joinToString(separator = "@$streamCode/")
+        joinToString(separator = "@$streamCode/") { it.lowercase() }
 
     private class WebSocketMessage(
         val stream: String,
