@@ -6,7 +6,7 @@ plugins {
     id("com.google.gms.google-services")
 }
 
-val compose_version = "1.1.0-rc02"
+val compose_version = "1.1.0-rc03"
 android {
 
     compileSdk = 31
@@ -70,6 +70,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling:$compose_version")
 
     implementation("com.google.dagger:hilt-android:2.38.1")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     kapt("com.google.dagger:hilt-android-compiler:2.38.1")
 
     val nav_version = "2.4.0"

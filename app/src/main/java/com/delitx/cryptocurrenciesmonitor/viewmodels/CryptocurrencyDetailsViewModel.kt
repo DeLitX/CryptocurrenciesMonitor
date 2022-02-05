@@ -1,9 +1,11 @@
 package com.delitx.cryptocurrenciesmonitor.viewmodels
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.delitx.cryptocurrenciesmonitor.common.DataState
 import com.delitx.cryptocurrenciesmonitor.domain.model.CurrencyHistory
+import com.delitx.cryptocurrenciesmonitor.ui.Routes
 import com.delitx.cryptocurrenciesmonitor.use_cases.GetCurrencyHistoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,18 +17,28 @@ import kotlin.time.Duration.Companion.days
 
 @HiltViewModel
 class CryptocurrencyDetailsViewModel(
-    private val currencyCode: String,
+    private val savedStateHandle: SavedStateHandle,
     private val _getCurrencyHistoryUseCase: GetCurrencyHistoryUseCase
 ) : ViewModel() {
+    private val currencyCode: String = savedStateHandle.get(Routes.RouteParts.CurrencyCode)!!
+
+    companion object {
+        val possibleSelectedIntervals = listOf(
+            30.days,
+            7.days
+        )
+    }
+
     private val _currencyHistories: MutableMap<String, StateFlow<DataState<CurrencyHistory>>> =
         mutableMapOf()
     val currencyHistories: Map<String, StateFlow<DataState<CurrencyHistory>>> = _currencyHistories
 
-    private val _selectedInterval: MutableStateFlow<Duration> = MutableStateFlow(30.days)
+    private val _selectedInterval: MutableStateFlow<Duration> =
+        MutableStateFlow(possibleSelectedIntervals[0])
     val selectedInterval: StateFlow<Duration> = _selectedInterval.asStateFlow()
 
     init {
-        selectInterval(30.days)
+        selectInterval(possibleSelectedIntervals[0])
     }
 
     fun selectInterval(interval: Duration) {
