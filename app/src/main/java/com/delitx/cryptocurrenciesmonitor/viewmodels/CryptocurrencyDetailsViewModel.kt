@@ -12,11 +12,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days
 
 @HiltViewModel
-class CryptocurrencyDetailsViewModel(
+class CryptocurrencyDetailsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val _getCurrencyHistoryUseCase: GetCurrencyHistoryUseCase
 ) : ViewModel() {
