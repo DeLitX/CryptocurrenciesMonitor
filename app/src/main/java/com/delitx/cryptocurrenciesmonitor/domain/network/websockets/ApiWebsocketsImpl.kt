@@ -1,16 +1,12 @@
 package com.delitx.cryptocurrenciesmonitor.domain.network.websockets
 
-import androidx.compose.ui.text.toLowerCase
 import com.delitx.cryptocurrenciesmonitor.domain.model.Currency
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.WebSocket
-import okhttp3.WebSocketListener
+import okhttp3.*
 
 class ApiWebsocketsImpl : ApiWebsockets {
     companion object {
@@ -29,13 +25,29 @@ class ApiWebsocketsImpl : ApiWebsockets {
             )
         }
         val resultList = localList.map { it.asStateFlow() }
-        val requestUrl = "$BASE_URL/stream?${currenciesCodes.encodeToMultipleStreams()}"
+        val requestUrl = "$BASE_URL/stream?streams=${currenciesCodes.encodeToMultipleStreams()}"
         val request = Request.Builder()
             .url(requestUrl)
             .build()
         _webSocket = _client.newWebSocket(
             request,
             object : WebSocketListener() {
+                override fun onOpen(webSocket: WebSocket, response: Response) {
+                    super.onOpen(webSocket, response)
+                }
+
+                override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
+                    super.onClosing(webSocket, code, reason)
+                }
+
+                override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
+                    super.onClosed(webSocket, code, reason)
+                }
+
+                override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+                    super.onFailure(webSocket, t, response)
+                }
+
                 override fun onMessage(webSocket: WebSocket, text: String) {
                     val currency = decodeCurrencyFromMessage(text)
                     val observedCurrency = localList.find { it.value.code == currency.code }
@@ -62,7 +74,7 @@ class ApiWebsocketsImpl : ApiWebsockets {
     private fun List<String>.encodeToMultipleStreams(
         streamCode: String = TRACKER_STREAM_CODE
     ): String =
-        joinToString(separator = "@$streamCode/") { it.lowercase() }
+        joinToString(separator = "@$streamCode/", postfix = "@$streamCode") { it.lowercase() }
 
     private class WebSocketMessage(
         val stream: String,
