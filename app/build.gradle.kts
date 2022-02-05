@@ -5,7 +5,7 @@ plugins {
     id("dagger.hilt.android.plugin")
 }
 
-val compose_version = "1.0.1"
+val compose_version = "1.1.0-rc02"
 android {
 
     compileSdk = 31
@@ -59,6 +59,8 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+
+    androidTestImplementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.10")
 
     implementation("androidx.compose.ui:ui:$compose_version")
     implementation("androidx.compose.material:material:$compose_version")
