@@ -28,7 +28,7 @@ class RemoteConfigRequestsImpl : RemoteConfigRequests {
 
     override suspend fun getCurrenciesCodesList(): List<String> {
         syncDataFromRemoteConfig()
-        val codesList = _remoteConfig.getString(CURRENCIES_CODES_KEY)
+        val codesList = _remoteConfig.getString(CURRENCIES_CODES_KEY).split(" ")
         val convertTo = _remoteConfig.getString(CONVERT_TO_KEY)
         return codesList.map { it + convertTo }
     }
