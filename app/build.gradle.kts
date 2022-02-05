@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
+    id("com.google.gms.google-services")
 }
 
 val compose_version = "1.1.0-rc02"
@@ -92,4 +93,8 @@ dependencies {
     val retrofit_version = "2.9.0"
     implementation("com.squareup.retrofit2:converter-gson:$retrofit_version")
     implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
+
+    implementation(platform("com.google.firebase:firebase-bom:29.0.4"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-config-ktx:21.0.1")
 }
