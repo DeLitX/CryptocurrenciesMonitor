@@ -1,4 +1,19 @@
 This application created to complete [this task](./task.txt)
 
-Application architecture [uml diagram](./uml_diagram.png)
+Application architecture beforehand:
 
+[alt text](./uml_diagram.png)
+
+Actual application architecture:
+
+[alt text](./uml_diagram_actual.png)
+
+Application uses these libraries: Jetpack Compose, Retrofit, OkHttp, Coroutines Flow, Hilt,
+Architecture Components.
+
+Application uses Firebase Remote Config to fetch cryptocurrencies to monitor. google-services.json
+does not included in repository. You should create custom firebase with these parameters:
+
+currenciesCodes - codes of currencies to monitor separated by space (Example: "BTC ETH DOGE LTC BNB XRP")
+
+convertTo - code of currency to show price of all other currencies (Example: "USDT")
