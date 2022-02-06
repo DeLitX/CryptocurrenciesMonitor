@@ -2,11 +2,11 @@ This application created to complete [this task](./task.txt)
 
 Application architecture beforehand:
 
-[alt text](./uml_diagram.png)
+![alt text](./uml_diagram.png)
 
 Actual application architecture:
 
-[alt text](./uml_diagram_actual.png)
+![alt text](./uml_diagram_actual.png)
 
 Application uses these libraries: Jetpack Compose, Retrofit, OkHttp, Coroutines Flow, Hilt,
 Architecture Components.
