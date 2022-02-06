@@ -9,7 +9,7 @@ import kotlin.coroutines.suspendCoroutine
 class RemoteConfigRequestsImpl : RemoteConfigRequests {
     private val _remoteConfig = FirebaseRemoteConfig.getInstance()
     private val _configSettings = remoteConfigSettings {
-        minimumFetchIntervalInSeconds = 60
+        minimumFetchIntervalInSeconds = 0
     }
 
     companion object {
@@ -28,17 +28,17 @@ class RemoteConfigRequestsImpl : RemoteConfigRequests {
     }
 
     override suspend fun getCurrenciesCodesList(): List<ConversionHolder> {
-        syncDataFromRemoteConfig()
+        val isSuccess = syncDataFromRemoteConfig()
         val codesList = _remoteConfig.getString(CURRENCIES_CODES_KEY).split(" ")
         val convertTo = _remoteConfig.getString(CONVERT_TO_KEY)
         return codesList.map { ConversionHolder(it, convertTo) }
     }
 
-    private suspend fun syncDataFromRemoteConfig(): Unit =
+    private suspend fun syncDataFromRemoteConfig(): Boolean =
         suspendCoroutine { cont ->
             _remoteConfig.fetchAndActivate()
                 .addOnCompleteListener {
-                    cont.resume(Unit)
+                    cont.resume(it.isSuccessful)
                 }
         }
 }
