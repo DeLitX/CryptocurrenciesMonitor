@@ -41,10 +41,11 @@ fun MarketChart(
     val decimalFormat = DecimalFormat("#0.0##")
     val formatter = SimpleDateFormat("HH:mm dd/MM", Locale.getDefault())
     val bounds = Rect()
+    val onBackgroundColor = MaterialTheme.colors.onBackground
     val textPaint = Paint().asFrameworkPaint().apply {
         isAntiAlias = true
         textSize = 35.sp.value
-        color = Color.White.toArgb()
+        color = onBackgroundColor.toArgb()
     }
 
     BoxWithConstraints(modifier = modifier) {
@@ -81,7 +82,8 @@ fun MarketChart(
                 chartWidth,
                 bounds,
                 textPaint,
-                formatter
+                formatter,
+                onBackgroundColor,
             )
 
             drawPriceLines(
@@ -90,9 +92,13 @@ fun MarketChart(
                 bounds,
                 textPaint,
                 decimalFormat,
+                onBackgroundColor,
             )
 
-            drawCandles(state)
+            drawCandles(
+                state,
+                onBackgroundColor,
+            )
         }
     }
 }
@@ -104,12 +110,13 @@ fun DrawScope.drawTimeLines(
     bounds: Rect,
     textPaint: NativePaint,
     formatter: SimpleDateFormat,
+    color: Color,
 ) {
     state.timeLines.forEach { candle ->
         val offset = state.xOffset(candle)
         if (offset !in 0f..chartWidth) return@forEach
         drawLine(
-            color = Color.White,
+            color = color,
             strokeWidth = 1.dp.value,
             start = Offset(offset, 0f),
             end = Offset(offset, chartHeight),
@@ -142,13 +149,14 @@ fun DrawScope.drawPriceLines(
     chartWidth: Float,
     bounds: Rect,
     textPaint: NativePaint,
-    decimalFormat: DecimalFormat
+    decimalFormat: DecimalFormat,
+    color: Color,
 ) {
     state.priceLines.forEach { value: Float ->
         val yOffset = state.yOffset(value)
         val text = decimalFormat.format(value)
         drawLine(
-            color = Color.White,
+            color = color,
             strokeWidth = 1.dp.value,
             start = Offset(0f, yOffset),
             end = Offset(chartWidth, yOffset),
@@ -171,19 +179,22 @@ fun DrawScope.drawPriceLines(
 }
 
 fun DrawScope.drawCandles(
-    state: MarketChartState
+    state: MarketChartState,
+    strokeColor: Color,
+    candleNegativeColor: Color = Color.Red,
+    candlePositiveColor: Color = Color.Green,
 ) {
     state.visibleCandles.forEach { candle ->
         val xOffset = state.xOffset(candle)
         drawLine(
-            color = Color.White,
+            color = strokeColor,
             strokeWidth = 2.dp.value,
             start = Offset(xOffset, state.yOffset(candle.low)),
             end = Offset(xOffset, state.yOffset(candle.high))
         )
         if (candle.open > candle.close) {
             drawRect(
-                color = Color.Red,
+                color = candleNegativeColor,
                 topLeft = Offset(xOffset - 6.dp.value, state.yOffset(candle.open)),
                 size = Size(
                     12.dp.value,
@@ -192,7 +203,7 @@ fun DrawScope.drawCandles(
             )
         } else {
             drawRect(
-                color = Color.Green,
+                color = candlePositiveColor,
                 topLeft = Offset(xOffset - 6.dp.value, state.yOffset(candle.close)),
                 size = Size(
                     12.dp.value,
