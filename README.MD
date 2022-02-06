@@ -8,6 +8,8 @@ Actual application architecture:
 
 ![alt text](./uml_diagram_actual.png)
 
+Example of app usage: https://youtu.be/FUjetSilG2M
+
 Application uses these libraries: Jetpack Compose, Retrofit, OkHttp, Coroutines Flow, Hilt,
 Architecture Components.
 
