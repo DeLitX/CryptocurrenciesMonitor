@@ -17,3 +17,5 @@ does not included in repository. You should create custom firebase with these pa
 currenciesCodes - codes of currencies to monitor separated by space (Example: "BTC ETH DOGE LTC BNB XRP")
 
 convertTo - code of currency to show price of all other currencies (Example: "USDT")
+
+Application uses [Binance API](https://binance-docs.github.io/apidocs) to track currencies' price
