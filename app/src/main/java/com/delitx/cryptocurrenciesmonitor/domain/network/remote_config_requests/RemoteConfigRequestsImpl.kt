@@ -1,5 +1,6 @@
 package com.delitx.cryptocurrenciesmonitor.domain.network.remote_config_requests
 
+import com.delitx.cryptocurrenciesmonitor.domain.model.ConversionHolder
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import kotlin.coroutines.resume
@@ -26,11 +27,11 @@ class RemoteConfigRequestsImpl : RemoteConfigRequests {
         )
     }
 
-    override suspend fun getCurrenciesCodesList(): List<String> {
+    override suspend fun getCurrenciesCodesList(): List<ConversionHolder> {
         syncDataFromRemoteConfig()
         val codesList = _remoteConfig.getString(CURRENCIES_CODES_KEY).split(" ")
         val convertTo = _remoteConfig.getString(CONVERT_TO_KEY)
-        return codesList.map { it + convertTo }
+        return codesList.map { ConversionHolder(it, convertTo) }
     }
 
     private suspend fun syncDataFromRemoteConfig(): Unit =

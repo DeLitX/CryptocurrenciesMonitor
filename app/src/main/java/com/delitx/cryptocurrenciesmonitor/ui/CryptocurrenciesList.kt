@@ -21,7 +21,7 @@ fun CryptocurrenciesList(
 ) {
     val list = viewModel.currenciesList.collectAsState()
     LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(list.value, key = { it.value.code }) { item ->
+        items(list.value, key = { it.value.codeForConversion }) { item ->
             val currency = item.collectAsState()
             CryptocurrenciesListItem(currency = currency.value, navController = navController)
         }
@@ -38,7 +38,7 @@ fun CryptocurrenciesListItem(
             .fillMaxWidth()
             .padding(7.dp)
             .clickable {
-                navController.navigate(Routes.CurrencyDetails(currency.code))
+                navController.navigate(Routes.CurrencyDetails(currency.codeForConversion))
             }
     ) {
         Row(
