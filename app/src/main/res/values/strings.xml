@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Cryptocurrencies Monitor</string>
+    <string name="failed_to_load_chart">Failed to load chart</string>
 </resources>

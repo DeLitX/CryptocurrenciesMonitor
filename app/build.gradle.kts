@@ -89,7 +89,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
 
-    implementation("com.google.code.gson:gson:2.8.6")
+    implementation("com.google.code.gson:gson:2.8.9")
 
     val retrofit_version = "2.9.0"
     implementation("com.squareup.retrofit2:converter-gson:$retrofit_version")

@@ -35,10 +35,11 @@ class ApiRequestsToBinance(
         currencyCode: String,
         intervalOfHistory: Duration
     ): CurrencyHistory {
-        val currentTime = getCurrentTime()
+        val currentTime = System.currentTimeMillis()
+        val interval = calculateSuitableBinanceInterval(intervalOfHistory).toString()
         val binanceResponse = _binanceRequests.getCurrencyHistory(
             currencyCode = currencyCode,
-            interval = calculateSuitableBinanceInterval(intervalOfHistory).toString(),
+            interval = interval,
             startTime = currentTime - intervalOfHistory.inWholeMilliseconds,
             endTime = currentTime
         )

@@ -1,6 +1,8 @@
 package com.delitx.cryptocurrenciesmonitor.di
 
-import com.delitx.cryptocurrenciesmonitor.domain.network.api_requests.ApiRequests
+import com.delitx.cryptocurrenciesmonitor.domain.network.api_requests.BinanceRequests
+import com.google.gson.GsonBuilder
+import com.google.gson.ToNumberPolicy
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,11 +21,17 @@ object RetrofitModule {
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(API_LINK)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(
+                GsonConverterFactory.create(
+                    GsonBuilder()
+                        .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
+                        .create()
+                )
+            )
             .build()
     }
 
     @Provides
-    fun provideUsersRequests(retrofit: Retrofit): ApiRequests =
-        retrofit.create(ApiRequests::class.java)
+    fun provideUsersRequests(retrofit: Retrofit): BinanceRequests =
+        retrofit.create(BinanceRequests::class.java)
 }

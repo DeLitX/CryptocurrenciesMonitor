@@ -1,6 +1,7 @@
 package com.delitx.cryptocurrenciesmonitor.di
 
-import com.delitx.cryptocurrenciesmonitor.domain.network.api_requests.ApiRequests
+import com.delitx.cryptocurrenciesmonitor.domain.network.api_requests.ApiRequestsToBinance
+import com.delitx.cryptocurrenciesmonitor.domain.network.api_requests.BinanceRequests
 import com.delitx.cryptocurrenciesmonitor.domain.network.remote_config_requests.RemoteConfigRequestsImpl
 import com.delitx.cryptocurrenciesmonitor.domain.network.websockets.ApiWebsocketsImpl
 import com.delitx.cryptocurrenciesmonitor.domain.repository.CryptocurrenciesRepository
@@ -13,14 +14,14 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object UsersRepositoryModule {
+object CryptocurrenciesRepositoryModule {
     @Singleton
     @Provides
-    fun provideUsersRepository(
-        apiRequests: ApiRequests,
+    fun provideCryptocurrenciesRepository(
+        binanceRequests: BinanceRequests,
     ): CryptocurrenciesRepository = CryptocurrenciesRepositoryImpl(
         _remoteConfigRequests = RemoteConfigRequestsImpl(),
-        _apiRequests = apiRequests,
+        _apiRequests = ApiRequestsToBinance(binanceRequests),
         _apiWebsockets = ApiWebsocketsImpl()
     )
 }

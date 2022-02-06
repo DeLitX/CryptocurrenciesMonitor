@@ -1,5 +1,6 @@
 package com.delitx.cryptocurrenciesmonitor.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -44,15 +45,20 @@ class CryptocurrencyDetailsViewModel @Inject constructor(
 
     fun selectInterval(interval: Duration) {
         viewModelScope.launch {
-            val history: MutableStateFlow<DataState<CurrencyHistory>> =
-                MutableStateFlow(DataState.Loading())
-            _currencyHistories[interval.toString()] = history
-            _selectedInterval.emit(interval)
-            try {
-                val loadedHistory = _getCurrencyHistoryUseCase(currencyCode, interval)
-                history.emit(DataState.Data(loadedHistory))
-            } catch (e: Exception) {
-                history.emit(DataState.Failure())
+            if (_currencyHistories[interval.toString()] != null) {
+                _selectedInterval.emit(interval)
+            } else {
+                val history: MutableStateFlow<DataState<CurrencyHistory>> =
+                    MutableStateFlow(DataState.Loading())
+                _currencyHistories[interval.toString()] = history
+                _selectedInterval.emit(interval)
+                try {
+                    val loadedHistory = _getCurrencyHistoryUseCase(currencyCode, interval)
+                    history.emit(DataState.Data(loadedHistory))
+                } catch (e: Exception) {
+                    Log.d("RetrofitException", e.message ?: "")
+                    history.emit(DataState.Failure())
+                }
             }
         }
     }
