@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="failed_to_load_chart" translatable="false">Не удалось загрузить график</string>
+    <string name="price_is">Цена: %1$s %2$s</string>
+</resources>

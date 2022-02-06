@@ -38,7 +38,7 @@ fun MarketChart(
             )
         }
 
-    val decimalFormat = DecimalFormat("##.00")
+    val decimalFormat = DecimalFormat("#0.0##")
     val formatter = SimpleDateFormat("HH:mm dd/MM", Locale.getDefault())
     val bounds = Rect()
     val textPaint = Paint().asFrameworkPaint().apply {
